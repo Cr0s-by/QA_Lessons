@@ -1,0 +1,1078 @@
+{
+	"info": {
+		"_postman_id": "efd8b148-57ef-4d51-a810-b6efbc0c3cde",
+		"name": "calc-web",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33969498"
+	},
+	"item": [
+		{
+			"name": "LoginAndCalc_SumOfNumbers_CorrectResult",
+			"item": [
+				{
+					"name": "Valid_login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authToken\", jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"{{userName}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SumOfNumbers_CorrectResult",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status is success\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+									"});\r",
+									"pm.test(\"Correct result\", function () {\r",
+									"    pm.expect(jsonData.data).to.eql(3);\r",
+									"});\r",
+									"pm.test(\"Message is none\", function () {\r",
+									"    pm.expect(jsonData.message).is.null;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"op1\": \"1\",\r\n    \"op2\": \"2\",\r\n    \"operation\": \"+\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/calc",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"calc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LoginAndCalc_EmptyOperands_InvalidLiteral",
+			"item": [
+				{
+					"name": "Valid_login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authToken\", jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"{{userName}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calc_EmptyOperands",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status is error\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+									"});\r",
+									"pm.test(\"Correct result\", function () {\r",
+									"    pm.expect(jsonData.data).is.null;\r",
+									"});\r",
+									"pm.test(\"Message is 'Unknown error'\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"Unknown error: invalid literal for int() with base 10: ''\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"op1\": \"\",\r\n    \"op2\": \"\",\r\n    \"operation\": \"+\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/calc",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"calc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LoginAndCalc_SameOperandSubtraction_ZeroValue",
+			"item": [
+				{
+					"name": "Valid_login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authToken\", jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"{{userName}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calc_SameOperandSubtraction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status is success\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+									"});\r",
+									"pm.test(\"Correct result\", function () {\r",
+									"    pm.expect(jsonData.data).to.eql(0);\r",
+									"});\r",
+									"pm.test(\"Message is none\", function () {\r",
+									"    pm.expect(jsonData.message).is.null;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"op1\": \"1\",\r\n    \"op2\": \"1\",\r\n    \"operation\": \"-\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/calc",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"calc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LoginAndCalc_AddingTheSameOperands_CorrectValue",
+			"item": [
+				{
+					"name": "Valid_login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authToken\", jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"{{userName}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calc_AddingTheSameOperands",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status is success\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+									"});\r",
+									"pm.test(\"Correct result\", function () {\r",
+									"    pm.expect(jsonData.data).to.eql(88);\r",
+									"});\r",
+									"pm.test(\"Message is none\", function () {\r",
+									"    pm.expect(jsonData.message).is.null;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"op1\": \"44\",\r\n    \"op2\": \"44\",\r\n    \"operation\": \"+\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/calc",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"calc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LoginAndCalc_MultiplyOperation_UnknownOperation",
+			"item": [
+				{
+					"name": "Valid_login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authToken\", jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"{{userName}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Calc_MultiplyOperation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status is fail\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"fail\");\r",
+									"});\r",
+									"pm.test(\"Correct result\", function () {\r",
+									"    pm.expect(jsonData.data).is.null;\r",
+									"});\r",
+									"pm.test(\"Message is 'unknown operation'\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"unknown operation\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"op1\": \"1\",\r\n    \"op2\": \"2\",\r\n    \"operation\": \"*\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/calc",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"calc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LoginAndCalc_CalculatingFloatingPointValues_UnknownOperation",
+			"item": [
+				{
+					"name": "Valid_login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authToken\", jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"{{userName}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CalculatingFloatingPointValues",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status is error\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+									"});\r",
+									"pm.test(\"Incorrect result\", function () {\r",
+									"    pm.expect(jsonData.data).is.null;\r",
+									"});\r",
+									"pm.test(\"Message is 'Unknown error'\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"Unknown error: invalid literal for int() with base 10: '1.1'\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"op1\": \"1.1\",\r\n    \"op2\": \"-2.2\",\r\n    \"operation\": \"+\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/calc",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"calc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LoginAndCalc_CalculationOfValuesWithValueE_UnknownOperation",
+			"item": [
+				{
+					"name": "Valid_login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authToken\", jsonData.data.token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"{{userName}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CalculationOfValuesWithValueE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status is error\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+									"});\r",
+									"pm.test(\"Incorrect result\", function () {\r",
+									"    pm.expect(jsonData.data).is.null;\r",
+									"});\r",
+									"pm.test(\"Message is 'Unknown error'\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"Unknown error: invalid literal for int() with base 10: 'e'\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"op1\": \"e\",\r\n    \"op2\": \"-e\",\r\n    \"operation\": \"+\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/calc",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"calc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login_ValidFirstUser_LoginSuccessAndTokenReturned",
+			"item": [
+				{
+					"name": "Login_ValidFirstUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authToken\", jsonData.data.token);\r",
+									"pm.test(\"Status is success\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"{{userName}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login_ValidSecondUser_LoginSuccessAndTokenReturned",
+			"item": [
+				{
+					"name": "Login_ValidSecondUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"authToken\", jsonData.data.token);\r",
+									"pm.test(\"Status is success\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"john\",\r\n    \"password\": \"qwerty\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login_InvalidUser_LoginFail",
+			"item": [
+				{
+					"name": "Login_InvalidUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status is fail\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"fail\");\r",
+									"});\r",
+									"pm.test(\"Data\", function () {\r",
+									"    pm.expect(jsonData.data).is.null;\r",
+									"});\r",
+									"pm.test(\"Message is fail\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"fail\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"admin1\",\r\n    \"password\": \"qwerty\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login_UserWithoutPassword_LoginFail",
+			"item": [
+				{
+					"name": "Login_UserWithoutPassword",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status is fail\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"fail\");\r",
+									"});\r",
+									"pm.test(\"Data\", function () {\r",
+									"    pm.expect(jsonData.data).is.null;\r",
+									"});\r",
+									"pm.test(\"Message is fail\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"fail\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"{{userName}}\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login_EnterPasswordOnly_LoginFail",
+			"item": [
+				{
+					"name": "Login_EnterPasswordOnly",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status is fail\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"fail\");\r",
+									"});\r",
+									"pm.test(\"Data\", function () {\r",
+									"    pm.expect(jsonData.data).is.null;\r",
+									"});\r",
+									"pm.test(\"Message is fail\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"fail\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login_NotData_LoginFail",
+			"item": [
+				{
+					"name": "Login_NotData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status is fail\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(\"fail\");\r",
+									"});\r",
+									"pm.test(\"Data\", function () {\r",
+									"    pm.expect(jsonData.data).is.null;\r",
+									"});\r",
+									"pm.test(\"Message is fail\", function () {\r",
+									"    pm.expect(jsonData.message).to.eql(\"fail\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appUrl}}/login",
+							"protocol": "http",
+							"host": [
+								"{{appUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
