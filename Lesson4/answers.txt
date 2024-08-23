@@ -1,0 +1,17 @@
+1.
+$$('.invalid-feedback')
+2.
+$$('.container p.mb-1');
+3.
+$('label[for="address2"]')
+4.
+$('#country')
+5.
+$('.btn-lg')
+6.
+$('h2')
+7.
+$(".badge")
+8.
+$$("h4>span:first-child")
+
