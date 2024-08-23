@@ -1,0 +1,5 @@
+flask
+jsonpickle
+selenium
+pytest
+allure-pytest
